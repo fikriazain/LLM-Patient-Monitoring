@@ -3,27 +3,26 @@ from typing import Optional, List, Mapping, Any
 
 import requests
 
-HOST = 'HOST'
-URI = f'https://{HOST}/api/v1/generate'
+HOST = '127.0.0.1:5000'
+URI = f'http://{HOST}/v1/completions'
 
 class AlpacaLLM(LLM):
-    
     @property
     def _llm_type(self) -> str:
         return "custom"
 
     def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
         if isinstance(stop, list):
-            stop = stop + ["\n###","\nObservation:", "\nObservations:"]
+            stop = stop + ["\n###","\nObservation:",'\nObservation:']
 
         response = requests.post(
             URI,
             json={
                 "prompt": prompt,
-                "temperature": 0.3, #0.7
+                "temperature": 0.0,
                 "max_new_tokens": 256,
                 "early_stopping": True,
-                "stopping_strings": stop,
+                "stop": stop,
                 'do_sample': True,
                 'top_p': 0.1,
                 'typical_p': 1,
@@ -39,10 +38,11 @@ class AlpacaLLM(LLM):
                 'truncation_length': 2048,
                 'ban_eos_token': False,
                 'skip_special_tokens': True,
+                "max_tokens": 256,
             },
         )
         response.raise_for_status()
-        return response.json()['results'][0]['text']
+        return response.json()['choices'][0]['text']
 
     @property
     def _identifying_params(self) -> Mapping[str, Any]:
