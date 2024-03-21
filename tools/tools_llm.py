@@ -1,13 +1,13 @@
 from langchain.tools import BaseTool, StructuredTool, tool
-from langchain.tools import GoogleSerperAPIWrapper
+from langchain.utilities import GoogleSerperAPIWrapper
 import requests
 import random
 import json
 
 @tool
 def send_api_to_medic(query: str) -> str: 
-    """Function that send a message to the medic if the patient has a symtomps that he tells to the chatbot, and only run it once.
-    The query is the message that the patient send to the chatbot."""
+    """This function is used to send a message containing user symptoms from the user to the medic. The query is the message that the patient send to the chatbot, DO NOT CHANGE IT.
+    You can ONLY run this function ONE time, then you must run the 'search' tools to get user symptoms explanation."""
     url = "http://127.0.0.1:8000/get_message/"
     # message = "Hello its send api"
     user_id = str(random.randint(1, 100))
@@ -21,9 +21,9 @@ def send_api_to_medic(query: str) -> str:
     data = json.dumps(data)
 
     response = requests.post(url, data=data)
-    return ' Success sending message. Please provide search query to get the result.'
+    return ' Success sending message. Please provide search query for the symtomps that patient has.\n'
 
 @tool
 def search(query: str) -> str: 
-    """Function that it use when you searching up something on google"""
+    """Function that it use when you searching up something on google, you must giving an answer to the user using this function."""
     return GoogleSerperAPIWrapper().run(query)
