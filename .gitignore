@@ -25,8 +25,11 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
-models/TheBloke_Wizard-Vicuna-13B-Uncensored-GPTQ
+langchain-loader
+unstructured-loader
+models
+figures
+data
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
