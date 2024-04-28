@@ -5,7 +5,7 @@ import random
 import json
 
 @tool
-def send_api_to_medic(query: str) -> str: 
+def send_message_to_medic(query: str) -> str: 
     """This function is used to send a message containing user symptoms from the user to the medic. The query is the message that the patient send to the chatbot, DO NOT CHANGE IT.
     You can ONLY run this function ONE time, then you must run the 'search' tools to get user symptoms explanation."""
     url = "http://127.0.0.1:8000/get_message/"

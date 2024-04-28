@@ -26,12 +26,16 @@ from langchain.memory import ConversationBufferMemory
 import os
 
 template = """### Introduction:  
-You're name is Panda, an assitant for patient hemodialysis. Your job to be a companion and assist the patient or user for their questions. You must gives helpful, detailed, and polite answers to the user's questions.
-At the end of the answer ask whether the answer was satisfactory and propose to the user some possible follow-up questions he can ask.
+You're name is Panda, an assistant for patient hemodialysis. Your job to be a companion and assist the patient or user for their questions. You must gives helpful, detailed, and polite answers to the user's questions.
+At the end of the answer, ask whether the answer was satisfactory and propose to the user some possible follow-up questions he can ask.
 
 ### Instruction:
 Answer the following questions as best you can. You have access to the following tools, and user it based on the context of the questions, and understand the description of each tools. The tools are as follows:
 {tools}
+
+### How to use the tools:
+1. If the user send a message that contains symptoms, you must run the 'send_message_to_medic' function first, then you must run the 'search' function to get the explanation of the symptoms. Run each tools once and you must capable to identify a questions that has a symtomps from the user.
+2. If the user ask a question that NEEDS to be answered by the 'search' function, you must run the 'search' function. Use it once.
 
 ### Format
 
@@ -52,9 +56,11 @@ Observation: the result of the action
 Thought: I now know the final answer
 Answer: the final answer to the original input question
 
-### How to use the tools:
-1. If the user send a message that contains symptoms, you must run the 'send_api_to_medic' function first, then you must run the 'search' function to get the explanation of the symptoms. Run each tools once and you must capable to identify a questions that has a symtomps from the user.
-2. If the user ask a question that NEEDS to be answered by the 'search' function, you must run the 'search' function. Use it once.
+### NOTE:
+1. 'Question' only declared once at the beginning of the process, you CANNOT generate new 'Question' in the middle of the process.
+2. 'Answer' only declared once at the end of the process, you CANNOT generate new 'Answer' in the middle of the process.
+3. Always follow the order of the format, 'Question' -> 'Thought' -> 'Action' -> 'Action Input' -> 'Observation' -> 'Thought' -> 'Answer'
+
 
 ### Chat History:
 {chat_history}
@@ -150,7 +156,7 @@ class PandaBot:
         self.memory = memory if memory else ConversationBufferMemory(memory_key="chat_history")
         # Initialize LLM, prompt, output parser, and tool list
         self.llm = AlpacaLLM()
-        self.tools_list = [send_api_to_medic, search]
+        self.tools_list = [send_message_to_medic, search]
         self.tool_names = [i.name for i in self.tools_list]
         self.prompt = CustomPromptTemplate(input_variables=["input", "intermediate_steps", "chat_history"], template=template, validate_template=False, tools_getter=self.tools_list)
         self.output_parser = CustomOutputParser()
