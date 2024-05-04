@@ -30,6 +30,8 @@ unstructured-loader
 models
 figures
 data
+loader_test
+multi_column
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

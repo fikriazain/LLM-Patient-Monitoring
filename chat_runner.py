@@ -1,7 +1,3 @@
-from langchain_community.document_loaders import DirectoryLoader, UnstructuredPDFLoader, PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_experimental.text_splitter import SemanticChunker
-from langchain.schema import Document
 from langchain.prompts import ChatPromptTemplate
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.vectorstores.chroma import Chroma
@@ -11,12 +7,12 @@ from llm_client import AlpacaLLM
 
 import time
 
-import os
-import shutil
-
 # CHROMA_PATH = "langchain-loader/chroma-multilingual_e5_large-semantic-split"
-CHROMA_PATH = "unstructured-loader/chroma-multilingual_e5_basic_split"
-DATA_PATH = "data/pdfs"
+# CHROMA_PATH = "unstructured-loader/chroma-multilingual_e5_basic_split"
+CHROMA_PATH = "final_test/chroma_test"
+CHROMA_PATH = "final_test/chroma_test2"
+
+# DATA_PATH = "data/pdfs"
 # os.environ['OPENAI_API_KEY'] = "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"
 
 PROMPT_TEMPLATE = """
