@@ -33,9 +33,9 @@ At the end of the answer, ask whether the answer was satisfactory and propose to
 Answer the following questions as best you can. You have access to the following tools, and user it based on the context of the questions, and understand the description of each tools. The tools are as follows:
 {tools}
 
-### How to use the tools:
-1. If the user send a message that contains symptoms, you must run the 'send_message_to_medic' function first, then you must run the 'search' function to get the explanation of the symptoms. Run each tools once and you must capable to identify a questions that has a symtomps from the user.
-2. If the user ask a question that NEEDS to be answered by the 'search' function, you must run the 'search' function. Use it once.
+### HOW TO USE THE TOOLS:
+1. If the user send a message that contains SYMPTOMS, you must execute the 'send_symptoms_to_medic' tool first, then you must run the 'search' function to get the explanation of the symptoms. Run each tools ONCE and you must capable to identify a questions that has a SYMPTOMS from the user.
+2. If the user ask a question that didn't contain any SYMPTOMS and it's just a questions about medi00cal stuff, execute 'search' function, you must run the 'search' function. Use it only ONCE.
 
 ### Format
 
@@ -47,7 +47,7 @@ Answer: the final answer to the original input question
 
 2. If you required any tools and **strictly** use the following format:
 
-Question: the input question you must answer, DO NOT CHANGE ThE INPUt QUESTION, it must the same with the user's Input.
+Question: the input question you must answer, DO NOT CHANGE ThE INPUT QUESTION, it must the same with the user's Input.
 Thought: you should always think about what to do, in every step after Observation
 Action: the action to take, should be one of [{tool_names}]
 Action Input: the input to the action, should be a question.
@@ -61,6 +61,8 @@ Answer: the final answer to the original input question
 2. 'Answer' only declared once at the end of the process, you CANNOT generate new 'Answer' in the middle of the process.
 3. Always follow the order of the format, 'Question' -> 'Thought' -> 'Action' -> 'Action Input' -> 'Observation' -> 'Thought' -> 'Answer'
 
+### Patient information:
+- Name: {username}
 
 ### Chat History:
 {chat_history}
@@ -97,6 +99,7 @@ class CustomPromptTemplate(StringPromptTemplate):
     """Whether or not to try validating the template."""
     
     tools_getter: List[StructuredTool]
+    username: str
 
     def format(self, **kwargs) -> str:
         # Get the intermediate steps (AgentAction, Observation tuples)
@@ -115,6 +118,7 @@ class CustomPromptTemplate(StringPromptTemplate):
         )
         # Create a list of tool names for the tools provided
         kwargs["tool_names"] = ", ".join([tool.name for tool in self.tools_getter])
+        kwargs["username"] = self.username
 
         return self.template.format(**kwargs)
     
@@ -156,9 +160,8 @@ class PandaBot:
         self.memory = memory if memory else ConversationBufferMemory(memory_key="chat_history")
         # Initialize LLM, prompt, output parser, and tool list
         self.llm = AlpacaLLM()
-        self.tools_list = [send_message_to_medic, search]
+        self.tools_list = [send_symptoms_to_medic, search]
         self.tool_names = [i.name for i in self.tools_list]
-        self.prompt = CustomPromptTemplate(input_variables=["input", "intermediate_steps", "chat_history"], template=template, validate_template=False, tools_getter=self.tools_list)
         self.output_parser = CustomOutputParser()
         os.environ["SERPER_API_KEY"] = 'f90fe84e78ef9d2d8e377ab5c6fe3a4a25f42ef0'
         os.environ["LANGCHAIN_TRACING_V2"] = 'true'
@@ -167,8 +170,10 @@ class PandaBot:
         os.environ["LANGCHAIN_PROJECT"] = 'LLM Patient Monitoring'
 
 
-    def query(self, input_text: str) -> str:
-        self.llm_chains = LLMChain(llm=self.llm, prompt=self.prompt)
+    def query(self, input_text: str, username: str) -> str:
+        prompt = CustomPromptTemplate(input_variables=["input", "intermediate_steps", "chat_history"], template=template, validate_template=False, tools_getter=self.tools_list, username=username)
+
+        self.llm_chains = LLMChain(llm=self.llm, prompt=prompt)
 
         self.agent = LLMSingleActionAgent(
             llm_chain=self.llm_chains, 
