@@ -3,6 +3,9 @@ from langchain.utilities import GoogleSerperAPIWrapper
 import requests
 import random
 import json
+from tools import db, embedding
+
+
 
 @tool
 def send_symptoms_to_medic(query: str) -> str: 
@@ -22,6 +25,12 @@ def send_symptoms_to_medic(query: str) -> str:
 
     response = requests.post(url, data=data)
     return ' Success sending message. Please provide search query for the symtomps that patient has.\n'
+
+# @tool
+def search_medic_info(query: str) -> str:
+    results = db.similarity_search_with_relevance_scores(query, k=3)
+    context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
+    return context_text
 
 @tool
 def search(query: str) -> str: 
