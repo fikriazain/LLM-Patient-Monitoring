@@ -1,7 +1,7 @@
 import fitz
 from multi_column import column_boxes
 
-filename = 'nutrisi_pada_anak_dengan_penyakit_ginjal_clean.pdf'
+filename = 'nutrisi_pada_anak_dengan_penyakit_ginjal - Copy.pdf'
 src = fitz.open(f"data\pdfs\\{filename}")
 doc = fitz.open()  # empty output PDF
 header_margin=100

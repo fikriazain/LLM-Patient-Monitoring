@@ -16,15 +16,14 @@ CHROMA_PATH = "final_test/chroma_test2"
 # os.environ['OPENAI_API_KEY'] = "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"
 
 PROMPT_TEMPLATE = """
-Jawab pertanyaan hanya menggunakan informasi di bawah ini, masing-masing informasi dipisahkan oleh '---':
+Jawab pertanyaan hanya menggunakan informasi di bawah ini, suatu informasi mungkin tidak mengandung informasi yang relevan dengan pertanyaan, masing-masing informasi dipisahkan oleh '---':
 
+Pertanyaan : {question}
 ---
 
 {context}
 
 ---
-
-Jawab pertanyaan menggunakan informasi di atas: {question}
 """
 
 def load_embedding_model():
