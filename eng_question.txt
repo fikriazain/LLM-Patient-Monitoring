@@ -1,11 +1,10 @@
 Jawablah pertanyaan di bawah ini hanya dengan menggunakan potongan teks di bawah ini, 
-tidak semua teks relevan dengan pertanyaan yang ditanyakan, 
+tidak semua potongan teks relevan dengan pertanyaan yang ditanyakan, 
 anda hanya perlu menjawab pertanyaan yang ditanyakan.
-Jawablah pertanyaan berikut menggunakan bahasa inggris.
-masing-masing informasi dipisahkan oleh '---':
+jawablah menggunakan bahasa inggris.
+masing-masing teks dipisahkan oleh '---':
 
 Pertanyaan : Apa penyebab kerusakan ginjal pada anak?
-?
 ---
 
 "ABSTRAK

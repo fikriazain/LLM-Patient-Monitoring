@@ -3,7 +3,7 @@ from typing import Optional, List, Mapping, Any
 
 import requests
 
-HOST = '127.0.0.1:5005'
+HOST = '127.0.0.1:5000'
 URI = f'http://{HOST}/v1/completions'
 
 class AlpacaLLM(LLM):
@@ -20,7 +20,7 @@ class AlpacaLLM(LLM):
             URI,
             json={
                 "prompt": prompt,
-                "temperature": 0, #0.7
+                "temperature": 0.3, #0.7
                 "stopping_strings": stop,
                 'do_sample': True,
                 'top_p': 0.1,
@@ -36,6 +36,7 @@ class AlpacaLLM(LLM):
                 'truncation_length': 2048,
                 'ban_eos_token': False,
                 'skip_special_tokens': True,
+                'max_new_tokens' : 512,
                 },
         )
         response.raise_for_status()
