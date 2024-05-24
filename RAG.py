@@ -16,6 +16,7 @@ def load_embedding_model(model_path : str):
     end_time = time.time()
     print(f'model load time {round(end_time - start_time, 0)} second')
     return local_embedding
+
 embedding = load_embedding_model(model_path="intfloat/multilingual-e5-large")
 # ------------------------------------------------------------------------------------
 
@@ -33,12 +34,10 @@ def rag_with_reranking(query : str):
         base_compressor=compressor, base_retriever=retriever
     )
     results = compression_retriever.invoke(query)
-
-    print(results)
     return results
 
 # example
 results = rag_with_reranking("apa penyabab kerusakan ginjal pada anak?")
 for doc in results:
     print(doc.page_content)
-    print(doc.metadata)
+    print('---')
