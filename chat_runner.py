@@ -15,15 +15,16 @@ CHROMA_PATH = "final_test/chroma_test2"
 # os.environ['OPENAI_API_KEY'] = "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"
 
 PROMPT_TEMPLATE = """
-Answer the question using only the three pieces of information below, each piece of information separated by '---':
-
+You are an assistant that can summarize a document and answer questions based on the document. You will be given three documents that separate by '---'. You will be asked a question based on the information in the documents. You must answer the question using only the information in the documents.
 ---
+These is the documents:
 
 {context}
 
 ---
 
-Answer the questions using the information above: {question}
+Question: {question}
+Answer:
 """
 
 def load_embedding_model():

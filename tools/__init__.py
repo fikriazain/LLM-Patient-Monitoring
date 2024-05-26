@@ -5,7 +5,7 @@ from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 import time
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import CrossEncoderReranker
-from bot.llm_client import AlpacaLLM
+from bot.llm_client import Mistral
 
 
 os.environ["SERPER_API_KEY"] = 'TOKEN'
@@ -31,5 +31,5 @@ reranker_model = HuggingFaceCrossEncoder(model_name="BAAI/bge-reranker-v2-m3")
 
 db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding).as_retriever(search_kwargs={"k": 20})
 
-model_llm_rag = AlpacaLLM()
+model_llm_rag = Mistral()
 

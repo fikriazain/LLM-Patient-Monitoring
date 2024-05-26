@@ -15,7 +15,7 @@ from langchain.tools import BaseTool
 from langchain.callbacks.manager import AsyncCallbackManagerForToolRun, CallbackManagerForToolRun
 from langchain.utilities import GoogleSerperAPIWrapper
 
-from bot.llm_client import AlpacaLLM
+from bot.llm_client import Mistral
 from typing import Callable
 import json
 import requests
@@ -171,7 +171,7 @@ class PandaBot:
         # Initialize memory if provided, otherwise create a new one
         self.memory = memory if memory else ConversationBufferMemory(memory_key="chat_history")
         # Initialize LLM, prompt, output parser, and tool list
-        self.llm = AlpacaLLM()
+        self.llm = Mistral()
         self.tools_list = [send_emergency_message_to_medic, search_information_for_question]
         self.tool_names = [i.name for i in self.tools_list]
         self.output_parser = CustomOutputParser()

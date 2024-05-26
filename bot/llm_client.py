@@ -6,7 +6,7 @@ import requests
 HOST = '127.0.0.1:5000'
 URI = f'http://{HOST}/v1/completions'
 
-class AlpacaLLM(LLM):
+class Mistral(LLM):
     @property
     def _llm_type(self) -> str:
         return "custom"
